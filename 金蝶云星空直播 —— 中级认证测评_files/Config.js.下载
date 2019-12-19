@@ -1,0 +1,277 @@
+/**
+ * 配置信息
+ * Created by Robert on 16/5/12.
+ */
+
+
++(function () {
+    "use strict";
+
+    var _CDN = location.protocol + '//cdn-static.taoke.com';   // http://tkxxb.com (bug http://bug.test.tkcdn.cn)
+    var PXB_CDN = _CDN + '/pxb';          // pxb (bug pxbstatic)
+    var PXB_LOCAL = location.protocol + '//www.91pxb.com';  // http://www.91pxb.com(http://bug.test.91pxb.net)
+    var MPXB_LOCAL = location.protocol + '//m.taoke.com';  // http://m.taoke.com(http://m-bug.test.taoke.cn)
+    var EXAM_CDN = location.protocol + '//cdn-exam.taoke.com';
+
+    var IS_VIP = false;//是否是专享版
+
+    /**
+     * 手机培训宝 cdn 路径
+     * @type {string}
+     */
+    var MPXB_CDN = _CDN + '/mpxb'; //mpxb (bug mpxbstatic)
+
+    /**
+     * did cookie 名称
+     * @type {string}
+     */
+    var COOKIE_DID_NAME = 'Tk_b993__did_';
+
+    /**
+     * 所在域taoke
+     * @type {string}
+     */
+    var COOKIE_DID_DOMAIN = '.taoke.com';
+
+    /**
+     * 快速访问前端路径前缀
+     * @type {string}
+     */
+    var QUICK_PATH = '/quick';
+
+    /**
+     * 静态化数据目录
+     * @type {string}
+     */
+    var DATA_PATH_BASE = '/front_new';
+
+    /**
+     * 培训宝静态化数据目录
+     * @type {string}
+     */
+    var PXB_DATA_PATH_BASE = DATA_PATH_BASE + '/pxb';
+
+    /**
+     * PXB 数据CDN前缀
+     * @type {string}
+     */
+    var PXB_DATA_CDN = _CDN + PXB_DATA_PATH_BASE;
+
+    var EXAM_DATA_CDN = EXAM_CDN + PXB_DATA_PATH_BASE;
+    /**
+     * PXB 数据本地数据前缀
+     * @type {string}
+     */
+    var PXB_DATA_LOCAL = PXB_LOCAL + PXB_DATA_PATH_BASE;
+
+    /**
+     * 头节点
+     * @type {null}
+     */
+    var head = null;
+
+    /**
+     * 获取head节点
+     * @returns {null|*}
+     */
+    function _getHead() {
+        return head || (head = document.getElementsByTagName('head')[0]);
+    }
+
+    /**
+     *  一加载脚本计数器
+     * @type {number}
+     */
+    var loadedScriptCounter = 0;
+
+    /**
+     * 已经加载的脚本
+     * @type {{}}
+     */
+    var loadedScripts = {};
+
+    /**
+     * 生成新的 脚本id
+     */
+    function newScriptId() {
+        return '__rx_js_ds_' + (++loadedScriptCounter);
+    }
+
+    /**
+     * 实际注入脚本
+     * @param url
+     * @private
+     */
+    function _inject_js_core(url) {
+
+        window.console.log('加载:' + url);
+
+        //var id = newScriptId();
+        //var script = document.createElement('script');
+        //script.src = url;
+        //script.setAttribute('id', id);
+        //
+        //var head = _getHead();
+        //
+        //var scripts = head.getElementsByTagName('script');
+        //if (scripts.length > 0) {
+        //    head.insertBefore(script, scripts[0]);
+        //} else {
+        //    head.appendChild(script);
+        //}
+        //
+        //loadedScripts[url] = id;
+
+        document.write('<scri' + 'pt src="' + url + '"></scri' + 'pt>');
+        window.console.log(url + '加载完成');
+    }
+
+    /**
+     * 在head中加载多个脚本
+     */
+    function inject_scripts_into_head(js1, js2, js3) {
+        var head = null;
+        for(var i =0, max=arguments.length; i<max; i++) {
+            var head = head || document.getElementsByTagName('head')[0];
+            var url = arguments[i];
+            var script = document.createElement('script')
+            script.setAttribute('src', url);
+            head.appendChild(script);
+        }
+    }
+
+    /**
+     * 在head中加载多个meta
+     */
+    function inject_metas_into_head(m1, m2, m3) {
+        var head = null;
+        for(var i =0, max=arguments.length; i<max; i++) {
+            var head = head || document.getElementsByTagName('head')[0];
+            var oTitle = document.getElementsByTagName('title')[0];
+            var oMeta = document.createElement('meta');
+            oMeta.name = arguments[i].name;
+            oMeta.content = arguments[i].content;
+            head.insertBefore(oMeta,oTitle);
+        }
+    }
+
+    /**
+     * 注入js文件
+     * @param path1
+     * @param path2
+     * @param path3
+     */
+    function inject_js(path1, path2, path3) {
+        var uri = '';
+        for (var i = 0, max = arguments.length; i < max; i++) {
+            uri += arguments[i];
+        }
+
+        _inject_js_core(uri);
+    }
+
+    var PXB_CONFIG = {
+
+        /**
+         * 培训宝CDN路径
+         */
+        PXB_CDN: PXB_CDN,
+
+        /**
+         * 手机培训宝CDN路径
+         */
+        MPXB_CDN: MPXB_CDN,
+
+        /**
+         * 培训宝路径(电脑)
+         */
+        PXB_LOCAL: PXB_LOCAL,
+
+        /**
+         * 培训宝路径(手机)
+         */
+        MPXB_LOCAL: MPXB_LOCAL,
+
+        /**
+         * 新静态路径
+         */
+        PXB_DATA_PATH_BASE: PXB_DATA_PATH_BASE,
+
+        /**
+         * Cookie 键名
+         */
+        COOKIE_DID_NAME: COOKIE_DID_NAME,
+
+        /**
+         * cookie did 域
+         */
+        COOKIE_DID_DOMAIN: COOKIE_DID_DOMAIN,
+
+        /**
+         * 培训宝数据目录(CDN)
+         */
+        PXB_DATA_CDN: PXB_DATA_CDN,
+
+        EXAM_DATA_CDN: EXAM_DATA_CDN,
+
+        /**
+         * 培训宝数据目录(LOCAL)
+         */
+        PXB_DATA_LOCAL: PXB_DATA_LOCAL,
+
+        /**
+         * 是否是专享版
+         */
+        IS_VIP: IS_VIP,
+
+        /**
+         * 注入js脚本文件 参数为 路径数组
+         * @param pathName
+         * @param js1
+         * @param js2
+         * @param js3
+         */
+        inject_js: inject_js,
+
+
+        /**
+         * 在head节点中注入脚本
+         */
+        inject_scripts_into_head: inject_scripts_into_head,
+        
+        /**
+         * 在head节点中注入meta
+         */
+        inject_metas_into_head: inject_metas_into_head,
+
+
+        // ajax请求超时时间 15 秒, 提高到55s
+        AJAX_TIME_OUT_MILLIS: 55000
+    };
+
+    /**
+     *
+     * @type {{PROJECT_PATH_NAME: string, EXAM_PATH_NAME: string, get_cdn_uri: get_cdn_uri, get_local_uri: get_local_uri, inject_local_js_files: inject_local_js_files, inject_cdn_js_files: inject_cdn_js_files}}
+     */
+    window.Config = PXB_CONFIG;
+    window.PXB_CONFIG = PXB_CONFIG;
+
+    // 补全endsWith方法
+    if (!String.prototype.endsWith) {
+        String.prototype.endsWith = function(es) {
+            var s = this;
+            if (!s || !es) {
+                return false;
+            }
+
+            var lastEs = s.lastIndexOf(es);
+            if (lastEs < 0) {
+                return false;
+            }
+
+            var yes = lastEs == s.length - 1;
+            return yes;
+        };
+    }
+
+}());

@@ -1,0 +1,6 @@
+FRECPAYTYPE='1' AND FBUSINESSTYPE='GetValue(FBUSINESSTYPE)'
+付款单过滤条件
+
+【概述】
+系统默认物料清单正查只能查询50个BOM版本,可以通过SQL后台更新支持查询的个数；
+ 更新语句：UPDATE T_MFG_OPTIONPARAM SET FPARAMVALUE='需要支持的数量'  WHERE FID=1 AND FPARAMNAME='QueryBomCount'

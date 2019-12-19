@@ -1,0 +1,45 @@
+/**
+ * 浏览器兼容性检查
+ * Created by Robert on 16/6/13.
+ */
+
+
++(function() {
+    "use strict";
+    function supportThisBrowser() {
+        return !!Object.create && !!Object.defineProperty;
+    }
+
+    if (!supportThisBrowser()) {
+        alert('你的浏览器版本过低，请尝试使用 谷歌 Chrome 浏览器（推荐）、Firefox 火狐浏览器（推荐）、IE9（或IE10、IE11）后重试.');
+    }
+
+    var noop =function() {};
+    if (!window.console) {
+        window.console = {
+            log:    noop,
+            assert: noop,
+            dir:    noop
+        }
+    }
+
+    if (!window.console.debug) {
+        window.console.debug = noop;
+    }
+
+    function isLocalStorageSupported() {
+        var testKey = 'test',
+            storage = window.localStorage;
+        try {
+            storage.setItem(testKey, 'testValue');
+            storage.removeItem(testKey);
+            return true;
+        } catch (error) {
+            return false;
+        }
+    }
+
+    if(!isLocalStorageSupported()){
+        alert('请退出浏览器"无痕浏览"模式后, 重新扫描二维码, 再进行考试');
+    }
+})();
